@@ -6,8 +6,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
+
 
 import scheduler.domain.Employee;
+import scheduler.domain.EmployeeHoliday;
 
 public class EmployeeService {
 	
@@ -90,7 +93,36 @@ public class EmployeeService {
 		return result;
 	}
 	
-
+	  public List<EmployeeHoliday> getHolidaysByEmployee(Employee employee) {
+			
+			List<EmployeeHoliday> result = new ArrayList<>();
+			//return connection.;
+				    Statement stmt = null;
+		    String query = "select * from EmployeeHoliday where startDate<Date >EndDate";
+		    try {
+		        stmt = connection.createStatement();
+		        ResultSet rs = stmt.executeQuery(query);
+		        while (rs.next()) {
+		        	EmployeeHoliday employeeHoliday = new EmployeeHoliday();
+		        	employeeHoliday.setId(rs.getString("ID"));
+		            employeeHoliday.setDate(rs.getDate("HOL_DATE").toLocalDate());
+		            String employeeId = rs.getString("EMPLOYEE_ID");
+		        	
+	 	 	
+			           result.add(employeeHoliday);
+			        }
+		        
+			    } catch (SQLException e ) {
+			      
+			    } finally {
+			       // if (stmt != null) { stmt.close(); }
+			    }
+			 
+				return result;
+			}
+	  
+	  
+	  
 
 	public Connection getConnection() {
 		return connection;

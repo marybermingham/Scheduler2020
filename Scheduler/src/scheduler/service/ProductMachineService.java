@@ -5,8 +5,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import scheduler.domain.EmployeeHoliday;
 import scheduler.domain.ProductMachine;
 
 public class ProductMachineService {
@@ -46,6 +49,20 @@ public class ProductMachineService {
 	 
 		return result;
 	}
+	
+	public List<String> getAllMachineIds() {
+		
+		List<ProductMachine> productMachines = getAllProductMachines();
+		Set<String> uniqueMachineIds = new HashSet<>();
+		
+		for (ProductMachine productMachine : productMachines) {
+			uniqueMachineIds.add(productMachine.getMachineId());
+		}
+		 	
+		return new ArrayList<>(uniqueMachineIds);
+	}
+	
+	
 
 
 	public Connection getConnection() {

@@ -5,14 +5,21 @@ import java.util.List;
 public class Schedule
 {
 	
-	private List<ScheduledOrder> sheduledOrders;
+	private List<ScheduledOrder> scheduledOrders;
+	
+	
+
+	public Schedule(List<ScheduledOrder> scheduledOrders) {
+		super();
+		this.scheduledOrders = scheduledOrders;
+	}
 
 	public List<ScheduledOrder> getSheduledOrders() {
-		return sheduledOrders;
+		return scheduledOrders;
 	}
 
 	public void setSheduledOrders(List<ScheduledOrder> sheduledOrders) {
-		this.sheduledOrders = sheduledOrders;
+		this.scheduledOrders = sheduledOrders;
 	}
 	
 	

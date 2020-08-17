@@ -1,6 +1,7 @@
 package scheduler.domain;
 
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDate;
 
 
 
@@ -9,18 +10,18 @@ public class Order {
 	private String id;
 	private Product product;
 	private String customerName;
-	private Date completionDate;
+	private LocalDate requiredDate;
 	
 	public Order() {
 		super();
 	}
 
 
-	public Order(Product product, String customerName, Date completionDate) {
+	public Order(Product product, String customerName, LocalDate requiredDate) {
 		super();
 		this.product = product;
 		this.customerName = customerName;
-		this.completionDate = completionDate;
+		this.requiredDate = requiredDate;
 	}
 
 	
@@ -45,13 +46,14 @@ public class Order {
 	}
 
 
-	public Date getCompletionDate() {
-		return completionDate;
+
+	public LocalDate getRequiredDate() {
+		return requiredDate;
 	}
 
 
-	public void setCompletionDate(Date completionDate) {
-		this.completionDate = completionDate;
+	public void setRequiredDate(LocalDate requiredDate) {
+		this.requiredDate = requiredDate;
 	}
 
 
@@ -68,7 +70,13 @@ public class Order {
 	@Override
 	public String toString() {
 		return "Order [id=" + id + ", product=" + product + ", customerName=" + customerName + ", completionDate="
-				+ completionDate + "]";
+				+ requiredDate + "]";
+	}
+
+
+	public void setCompletionDate(Date date) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

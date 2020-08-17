@@ -5,6 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 import scheduler.domain.Employee;
@@ -39,7 +43,7 @@ public class EmployeeHolidayService {
 	        while (rs.next()) {
 	        	EmployeeHoliday employeeHoliday = new EmployeeHoliday();
 	        	employeeHoliday.setId(rs.getString("ID"));
-	        	employeeHoliday.setDate(rs.getDate("HOL_DATE"));
+	        	employeeHoliday.setDate(rs.getDate("HOL_DATE").toLocalDate());
 	            String employeeId = rs.getString("EMPLOYEE_ID");
 	        	Employee employee = employeeService.getEmployeeById(employeeId);
  	 	
@@ -55,10 +59,50 @@ public class EmployeeHolidayService {
 			return result;
 		}
 
+//  public List<EmployeeHoliday> getHolidaysByEmployee(Employee employee) {
+//		
+//		List<EmployeeHoliday> result = new ArrayList<>();
+//		//return connection.;
+//			    Statement stmt = null;
+//	    String query = "select * from EmployeeHoliday where start<Date >End";
+//	    try {
+//	        stmt = connection.createStatement();
+//	        ResultSet rs = stmt.executeQuery(query);
+//	        while (rs.next()) {
+//	        	EmployeeHoliday employeeHoliday = new EmployeeHoliday();
+//	        	employeeHoliday.setId(rs.getString("ID"));
+//	        	employeeHoliday.setDate(rs.getDate("HOL_DATE"));
+//	            String employeeId = rs.getString("EMPLOYEE_ID");
+//	       
+// 	 	
+//		           result.add(employee);
+//		        }
+//	        
+//		    } catch (SQLException e ) {
+//		      
+//		    } finally {
+//		       // if (stmt != null) { stmt.close(); }
+//		    }
+//		 
+//			return result;
+//		}
+//  
+  //  public List<Date> getEmployeeUnavailableDays() {
+	  
+	 // return EmployeeUnavailableDays;
+ // }
+  
+  
+    public Map<String, Date> EmployeeUnavailableDays = new HashMap<>();{
+ 
+ 	
+ }
+ 		
+ 		
+ 		
 
-	public Connection getConnection() {
-		return connection;
-	}
+	
+	
 
 
 
