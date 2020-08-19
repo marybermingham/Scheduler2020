@@ -10,34 +10,32 @@ import java.util.List;
 import scheduler.domain.Schedule;
 import scheduler.domain.Product;
 
-public class ScheduleOrderService {
+public class ScheduledOrderService {
 
 	
 	private Connection connection;
 	
-	public ScheduleOrderService(Connection connection, ProductService productService) {
+	public ScheduledOrderService(Connection connection) {
 		super();
 		this.connection = connection;
 	}
 	
 	
-	public void saveAll(List<Schedule> schedules) {
-		
-	}
 
 
-	public List<Schedule> getAllSchedules() {
+
+	public List<Order> getAllOrders() {
 		//return connection.;
 		
 		List<Schedule> result = new ArrayList<>();
 		Statement stmt = null;
-	    String query = "select * from Schedule";
+	    String query = "select * from Order";
 	    try {
 	        stmt = connection.createStatement();
 	        ResultSet rs = stmt.executeQuery(query);
 	        while (rs.next()) {
-	        	Schedule schedule = new Schedule();   		        	
-		         result.add(schedule);
+	        	ScheduledOrder scheduledOrder = new ScheduledOrder();   		        	
+		         result.add(scheduledOrders);
 		        }
 		    } catch (SQLException e ) {
 		      

@@ -15,7 +15,7 @@ public class ScheduleService {
 	
 	private Connection connection;
 	
-	public ScheduleService(Connection connection, ProductService productService) {
+	public ScheduleService(Connection connection) {
 		super();
 		this.connection = connection;
 	}

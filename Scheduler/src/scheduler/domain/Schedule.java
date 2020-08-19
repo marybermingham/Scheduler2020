@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Schedule {
 	
-	private String Id;
+	private Schedule schedule;
     private List<Order> scheduledOrders;
     
     
@@ -14,15 +14,25 @@ public class Schedule {
 		super();
 	}
 
+	public Schedule(Schedule schedule,  List<Order> scheduledOrders) {
+		super();
+		this.schedule = schedule;
+		this.List<Order> = List<order>
+		
+		
 	
-	public String getId() {
-		return Id;
+	}
+
+	public Schedule getSchedule() {
+		return schedule;
 	}
 
 
-	public void setId(String id) {
-		Id = id;
+
+	public void setSchedule(Schedule schedule) {
+		this.schedule = schedule;
 	}
+
 
 
 	public List<Order> getScheduledOrders() {
@@ -30,9 +40,12 @@ public class Schedule {
 	}
 
 
+
 	public void setScheduledOrders(List<Order> scheduledOrders) {
 		this.scheduledOrders = scheduledOrders;
 	}
+
+
 
 	
 }

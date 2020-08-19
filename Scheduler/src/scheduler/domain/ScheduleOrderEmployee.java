@@ -4,7 +4,8 @@ import java.util.List;
 
 public class ScheduleOrderEmployee {
 	
-	private String id;
+	private Order order;
+	private Schedule schedule;
 	private List<Employee> employees;
 	 
 	
@@ -17,15 +18,29 @@ public class ScheduleOrderEmployee {
 
 
 
-	public String getId() {
-		return id;
+	public Order getOrder() {
+		return order;
 	}
 
 
 
 
-	public void setId(String id) {
-		this.id = id;
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+
+
+
+
+	public Schedule getSchedule() {
+		return schedule;
+	}
+
+
+
+
+	public void setSchedule(Schedule schedule) {
+		this.schedule = schedule;
 	}
 
 
@@ -41,6 +56,13 @@ public class ScheduleOrderEmployee {
 	public void setEmployees(List<Employee> employees) {
 		this.employees = employees;
 	}
+
+
+
+
+
+
+
 
 	
 

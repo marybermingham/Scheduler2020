@@ -15,23 +15,20 @@ public class ScheduleOrderEmployeeService {
 	
 	private Connection connection;
 	
-	public ScheduleOrderEmployeeService(Connection connection, ProductService productService) {
+	public ScheduleOrderEmployeeService(Connection connection) {
 		super();
 		this.connection = connection;
 	}
 	
 	
-	public void saveAll(List<Schedule> schedules) {
-		
-	}
 
 
-	public List<Schedule> getAllSchedules() {
+	public List<Schedule> getAllEmployees() {
 		//return connection.;
 		
 		List<Schedule> result = new ArrayList<>();
 		Statement stmt = null;
-	    String query = "select * from Schedule";
+	    String query = "select * from Employee";
 	    try {
 	        stmt = connection.createStatement();
 	        ResultSet rs = stmt.executeQuery(query);
