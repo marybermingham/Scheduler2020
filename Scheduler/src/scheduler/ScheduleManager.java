@@ -49,6 +49,7 @@ public class ScheduleManager {
 		employeeService = new EmployeeService(connection);
 		employeeHolidayService = new EmployeeHolidayService(connection, employeeService);
 		productMachineService = new ProductMachineService(connection);
+		// scheduleService = new ScheduleService(connection);
 	
 		List<Product> products = productService.getAllProducts();
 
@@ -92,6 +93,10 @@ public class ScheduleManager {
 	}
 	
 	private Integer getScheduleScore(Schedule schedule) {
+		schedule.getScheduledOrders();
+	    schedule.getId();
+				
+		
 		return 0;
 	}
 	
@@ -139,13 +144,13 @@ public class ScheduleManager {
 	}
 	
 	
-	private Schedule getRandomSchedule(List<Order> orders){
+	private Schedule getRandomSchedule(List<Order> batchOrder){
 		    
 		Map<Employee, List<LocalDate>>  employeeUnavailableDaysMap = getEmployeeUnavailableDaysMap();
 		Map<String, List<LocalDate>>  machineUnavailableDaysMap = getMachineUnavailableDaysMap();
 		List<ScheduledOrder> scheduledOrders = new ArrayList<>();
 		List<LocalDate> orderRequiredDates = new ArrayList<>();
-		for(Order order : orders) {
+		for(Order order : batchOrder) {
 			orderRequiredDates.add(order.getRequiredDate());
 		}
 		LocalDate startDate = LocalDate.now();		
@@ -153,7 +158,7 @@ public class ScheduleManager {
 			scheduledOrders.add(randomlyScheduleOrder(startDate, order, employeeUnavailableDaysMap, machineUnavailableDaysMap));
 		}
 		
-		return new Schedule(scheduledOrders);
+		return  (scheduledOrders;
 
 	}
 
@@ -187,16 +192,7 @@ public class ScheduleManager {
 	    return machineUnavailableDaysMap;
 	}
 	
-	
-  
-	
-	public static LocalDate getStartDate(LocalDate now, LocalDate completionDate) {
-    long nowEpochDay = now.toEpochDay();
-    long completionDateEpochDay = completionDate.toEpochDay();
-    long randomDay = ThreadLocalRandom.current().nextLong(nowEpochDay, completionDateEpochDay);
-    System.out.println(randomDay);
-    return LocalDate.ofEpochDay(randomDay);
-}
+
 	
 	private ScheduledOrder randomlyScheduleOrder(LocalDate startDate, Order order, Map<Employee, List<LocalDate>>  employeeUnavailableDaysMap, Map<String, List<LocalDate>>  machineUnavailableDaysMap) {
 		List<LocalDate> applicableDates = new ArrayList<>();

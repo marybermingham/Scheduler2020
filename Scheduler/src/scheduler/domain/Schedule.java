@@ -1,32 +1,38 @@
 package scheduler.domain;
 
+
 import java.util.List;
 
-public class Schedule
-{
+public class Schedule {
 	
-	private List<ScheduledOrder> scheduledOrders;
-	
-	
-
-	public Schedule(List<ScheduledOrder> scheduledOrders) {
+	private String Id;
+    private List<Order> scheduledOrders;
+    
+    
+    
+	public Schedule() {
 		super();
-		this.scheduledOrders = scheduledOrders;
 	}
 
-	public List<ScheduledOrder> getSheduledOrders() {
+	
+	public String getId() {
+		return Id;
+	}
+
+
+	public void setId(String id) {
+		Id = id;
+	}
+
+
+	public List<Order> getScheduledOrders() {
 		return scheduledOrders;
 	}
 
-	public void setSheduledOrders(List<ScheduledOrder> sheduledOrders) {
-		this.scheduledOrders = sheduledOrders;
-	}
-	
-	
 
-	
-	
+	public void setScheduledOrders(List<Order> scheduledOrders) {
+		this.scheduledOrders = scheduledOrders;
+	}
+
 	
 }
-
-
