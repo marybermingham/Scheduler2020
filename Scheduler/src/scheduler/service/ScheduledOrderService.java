@@ -24,7 +24,7 @@ public class ScheduledOrderService {
 
 
 
-	public List<Order> getAllOrders() {
+	public List<Order> getAllScheduledOrders() {
 		//return connection.;
 		
 		List<Schedule> result = new ArrayList<>();
