@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,50 +12,44 @@ import java.util.List;
 
 import scheduler.domain.Employee;
 import scheduler.domain.EmployeeHoliday;
-import scheduler.domain.Product;
 
 public class EmployeeHolidayService {
 
 	private Connection connection;
 	private EmployeeService employeeService;
-	
 
-	
-	
-	public EmployeeHolidayService(Connection connection, EmployeeService employeeService ) {
+	public EmployeeHolidayService(Connection connection) {
 		super();
 		this.connection = connection;
-		this.employeeService = employeeService;
+		this.employeeService = new EmployeeService(connection);
 	}
 
-
-	
 	public List<EmployeeHoliday> getAllEmployeeHolidays() {
 		
-		List<EmployeeHoliday> result = new ArrayList<>();
+		List<EmployeeHoliday> employeeHolidays = new ArrayList<>();
 		//return connection.;
 			    Statement stmt = null;
-	    String query = "select * from EmployeeHoliday";
+	    String query = "select * from EMPLOYEE_HOLIDAY";
 	    try {
 	        stmt = connection.createStatement();
 	        ResultSet rs = stmt.executeQuery(query);
 	        while (rs.next()) {
-	        	EmployeeHoliday employeeHoliday = new EmployeeHoliday();
-	        	employeeHoliday.setId(rs.getString("ID"));
-	        	employeeHoliday.setDate(rs.getDate("HOL_DATE").toLocalDate());
-	            String employeeId = rs.getString("EMPLOYEE_ID");
-	        	Employee employee = employeeService.getEmployeeById(employeeId);
- 	 	
-		           result.add(employeeHoliday);
+					EmployeeHoliday employeeHoliday = new EmployeeHoliday();
+					employeeHoliday.setId(rs.getInt("ID"));
+					employeeHoliday.setDate(rs.getDate("HOL_DATE").toLocalDate());
+					Integer employeeId = rs.getInt("EMPLOYEE_ID");
+					Employee employee = employeeService.getById(employeeId);
+					employeeHoliday.setEmployee(employee);
+				employeeHolidays.add(employeeHoliday);
 		        }
 	        
 		    } catch (SQLException e ) {
-		      
+				System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
+
 		    } finally {
-		       // if (stmt != null) { stmt.close(); }
 		    }
 		 
-			return result;
+			return employeeHolidays;
 		}
 
 //  public List<EmployeeHoliday> getHolidaysByEmployee(Employee employee) {

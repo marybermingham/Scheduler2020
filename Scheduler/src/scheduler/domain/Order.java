@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 public class Order {
 	
-	private String id;
+	private Integer id;
 	private Product product;
 	private String customerName;
 	private LocalDate requiredDate;
@@ -24,17 +24,13 @@ public class Order {
 		this.requiredDate = requiredDate;
 	}
 
-	
-
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
 
-
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
-
 
 	public String getCustomerName() {
 		return customerName;

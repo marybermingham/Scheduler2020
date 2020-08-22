@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Date;
 
 
 import scheduler.domain.Employee;
@@ -23,9 +22,7 @@ public class EmployeeService {
 	
 	}
 
-
-	
-	public Employee getEmployeeById(String id) {
+	public Employee getById(Integer id) {
 		
 
 		//return connection.;
@@ -48,8 +45,9 @@ public class EmployeeService {
 		Employee employee = new Employee();
 		try {
 		
-	    	employee.setId(rs.getString("ID"));
-	    	employee.setEmployeeName(rs.getString("EMPLOYEE_NAME"));
+	    	employee.setId(rs.getInt("ID"));
+			employee.setCardId(rs.getString("CARD_ID"));
+	    	employee.setName(rs.getString("NAME"));
 	    	employee.setAddress(rs.getString("ADDRESS"));
 	    	employee.setPhoneNo(rs.getString("PHONE_NO"));
 	    	employee.setEmail(rs.getString("EMAIL"));
@@ -72,15 +70,14 @@ public class EmployeeService {
 	        ResultSet rs = stmt.executeQuery(query);
 	        while (rs.next()) {
 	        	Employee employee = new Employee();
-	        	employee.setId(rs.getString("ID"));
-	        	employee.setEmployeeName(rs.getString("EMPLOYEE_NAME"));
+	        	employee.setId(rs.getInt("ID"));
+				employee.setCardId(rs.getString("CARD_ID"));
+				employee.setName(rs.getString("NAME"));
 	        	employee.setAddress(rs.getString("ADDRESS"));
 	        	employee.setPhoneNo(rs.getString("PHONE_NO"));
 	        	employee.setEmail(rs.getString(" EMAIL"));
 	        	
-	        	
-	        	
-	        	
+
 	           result.add(employee);
 	           
 	        }
@@ -98,13 +95,13 @@ public class EmployeeService {
 			List<EmployeeHoliday> result = new ArrayList<>();
 			//return connection.;
 				    Statement stmt = null;
-		    String query = "select * from EmployeeHoliday where startDate<Date >EndDate";
+		    String query = "select * from EmployeeHoliday where employee_id = " + employee;
 		    try {
 		        stmt = connection.createStatement();
 		        ResultSet rs = stmt.executeQuery(query);
 		        while (rs.next()) {
 		        	EmployeeHoliday employeeHoliday = new EmployeeHoliday();
-		        	employeeHoliday.setId(rs.getString("ID"));
+		        	employeeHoliday.setId(rs.getInt("ID"));
 		            employeeHoliday.setDate(rs.getDate("HOL_DATE").toLocalDate());
 		            String employeeId = rs.getString("EMPLOYEE_ID");
 		        	

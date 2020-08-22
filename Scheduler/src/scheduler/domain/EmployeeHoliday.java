@@ -4,25 +4,21 @@ import java.time.LocalDate;
 
 public class EmployeeHoliday {
 		
-		private String id;
+		private Integer id;
 		private Employee employee;
 		private LocalDate date;
-		
 
 
-		public EmployeeHoliday() {
-			super();
-		}
-
-
-		public String getId() {
+		public Integer getId() {
 			return id;
 		}
 
-
-
-		public void setId(String id) {
+		public void setId(Integer id) {
 			this.id = id;
+		}
+
+		public EmployeeHoliday() {
+			super();
 		}
 
 
@@ -46,8 +42,6 @@ public class EmployeeHoliday {
 		}
 
 
-	
-		
 	}
 
 

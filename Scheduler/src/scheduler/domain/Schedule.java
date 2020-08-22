@@ -4,48 +4,47 @@ package scheduler.domain;
 import java.util.List;
 
 public class Schedule {
-	
-	private Schedule schedule;
-    private List<Order> scheduledOrders;
-    
-    
-    
+	private Integer id;
+    private List<ScheduledOrder> scheduledOrders;
+    private int score;
+
 	public Schedule() {
 		super();
 	}
 
-	public Schedule(Schedule schedule,  List<Order> scheduledOrders) {
-		super();
-		this.schedule = schedule;
-		this.List<Order> = List<order>
-		
-		
-	
-	}
-
-	public Schedule getSchedule() {
-		return schedule;
-	}
-
-
-
-	public void setSchedule(Schedule schedule) {
-		this.schedule = schedule;
-	}
-
-
-
-	public List<Order> getScheduledOrders() {
-		return scheduledOrders;
-	}
-
-
-
-	public void setScheduledOrders(List<Order> scheduledOrders) {
+	public Schedule(List<ScheduledOrder> scheduledOrders) {
 		this.scheduledOrders = scheduledOrders;
 	}
 
+	public Integer getId() {
+		return id;
+	}
 
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-	
+	public List<ScheduledOrder> getScheduledOrders() {
+		return scheduledOrders;
+	}
+
+	public void setScheduledOrders(List<ScheduledOrder> scheduledOrders) {
+		this.scheduledOrders = scheduledOrders;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	@Override
+	public String toString() {
+		return "Schedule{" +
+				"scheduledOrders=" + scheduledOrders +
+				", score=" + score +
+				'}';
+	}
 }

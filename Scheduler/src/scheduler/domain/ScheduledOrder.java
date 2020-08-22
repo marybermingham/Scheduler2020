@@ -4,14 +4,13 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class ScheduledOrder {
-	
+	private Integer id;
 	private Order order;
     private LocalDate startDate;
     private LocalDate endDate;
     private List<Employee> employees;
     
-    
-    
+
 	public ScheduledOrder() {
 		super();
 	}
@@ -25,6 +24,13 @@ public class ScheduledOrder {
 		this.employees = employees;
 	}
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public Order getOrder() {
 		return order;
@@ -57,5 +63,14 @@ public class ScheduledOrder {
 	public void setEmployees(List<Employee> employees) {
 		this.employees = employees;
 	}
-       
+
+	@Override
+	public String toString() {
+		return "ScheduledOrder{" +
+				"order=" + order +
+				", startDate=" + startDate +
+				", endDate=" + endDate +
+				", employees=" + employees +
+				'}';
+	}
 }

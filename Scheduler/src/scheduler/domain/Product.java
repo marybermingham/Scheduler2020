@@ -4,10 +4,11 @@ package scheduler.domain;
 
 public class Product {
 	
-		private String id;
-		private String productName;
+		private Integer id;
+		private String code;
+		private String name;
 		private int noProcessDays;
-		private String machineId;
+		private String machineCode;
 		private int noEmployeesRequired;
 		
 		public Product() {
@@ -15,17 +16,31 @@ public class Product {
 		}
 
 
-		public Product(String id, String productName, int noProcessDay, String machineId) {
+		public Product(String code, String name, int noProcessDay, String machineCode) {
 			super();
-			this.id = id;
-			this.productName = productName;
+			this.code = code;
+			this.name = name;
 			this.noProcessDays = noProcessDay;
-			this.machineId = machineId;
+			this.machineCode = machineCode;
 		}
 
 
+		public Integer getId() {
+			return id;
+		}
 
-		
+		public void setId(Integer id) {
+			this.id = id;
+		}
+
+		public String getCode() {
+			return code;
+		}
+
+		public void setCode(String code) {
+			this.code = code;
+		}
+
 		public int getNoEmployeesRequired() {
 			return noEmployeesRequired;
 		}
@@ -36,23 +51,13 @@ public class Product {
 		}
 
 
-		public String getId() {
-			return id;
+		public String getName() {
+			return name;
 		}
 
 
-		public void setId(String id) {
-			this.id = id;
-		}
-
-
-		public String getProductName() {
-			return productName;
-		}
-
-
-		public void setProductName(String productName) {
-			this.productName = productName;
+		public void setName(String name) {
+			this.name = name;
 		}
 
 
@@ -66,20 +71,20 @@ public class Product {
 		}
 
 
-		public String getMachineId() {
-			return machineId;
+		public String getMachineCode() {
+			return machineCode;
 		}
 
 
-		public void setMachineId(String machineId) {
-			this.machineId = machineId;
+		public void setMachineCode(String machineCode) {
+			this.machineCode = machineCode;
 		}
 
 
 		@Override
 		public String toString() {
-			return "Product [id=" + id + ", productName=" + productName + ", noProcessDays=" + noProcessDays
-					+ ", machineId=" + machineId + ", noEmployeesRequired=" + noEmployeesRequired + "]";
+			return "Product [code=" + code + ", name=" + name + ", noProcessDays=" + noProcessDays
+					+ ", machineId=" + machineCode + ", noEmployeesRequired=" + noEmployeesRequired + "]";
 		}
 		
 		

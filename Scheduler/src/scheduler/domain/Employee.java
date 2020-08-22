@@ -2,51 +2,50 @@ package scheduler.domain;
 
 public class Employee {
 	
-	private String id;
-	private String employeeName;
+	private Integer id;
+	private String cardId;
+	private String name;
 	private String address;
 	private String phoneNo;
 	private String email; 
-	
-	
-	
+
 	public Employee() {
 		super();
 	}
 
-
-
-	public Employee(String id, String employeeName, String address, String phoneNo, String email) {
+	public Employee(String cardId, String name, String address, String phoneNo, String email) {
 		super();
-		this.id = id;
-		this.employeeName = employeeName;
+		this.cardId = cardId;
+		this.name = name;
 		this.address = address;
 		this.phoneNo = phoneNo;
 		this.email = email;
 	}
 
-
-
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
 
-
-
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
+	public String getCardId() {
+		return cardId;
+	}
 
+	public void setCardId(String cardId) {
+		this.cardId = cardId;
+	}
 
-	public String getEmployeeName() {
-		return employeeName;
+	public String getName() {
+		return name;
 	}
 
 
 
-	public void setEmployeeName(String employeeName) {
-		this.employeeName = employeeName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 

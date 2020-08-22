@@ -1,14 +1,8 @@
 package scheduler.service;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
+import scheduler.domain.ScheduledOrder;
 
-import scheduler.domain.Schedule;
-import scheduler.domain.Product;
+import java.sql.*;
 
 public class ScheduleOrderEmployeeService {
 
@@ -19,29 +13,42 @@ public class ScheduleOrderEmployeeService {
 		super();
 		this.connection = connection;
 	}
-	
-	
 
 
-	public List<Schedule> getAllEmployees() {
-		//return connection.;
-		
-		List<Schedule> result = new ArrayList<>();
-		Statement stmt = null;
-	    String query = "select * from Employee";
-	    try {
-	        stmt = connection.createStatement();
-	        ResultSet rs = stmt.executeQuery(query);
-	        while (rs.next()) {
-	        	Schedule schedule = new Schedule();   		        	
-		         result.add(schedule);
-		        }
-		    } catch (SQLException e ) {
-		      
-		    } 
-	    return result;
+	public void save(Integer scheduledOrderId, Integer employeeId) {
+
+		String SQL_INSERT = "INSERT INTO ORDER (SCHEDULED_ORDER_ID, EMPLOYEE_ID) VALUES (?,?)";
+
+		try (
+			PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT)) {
+			preparedStatement.setInt(1, scheduledOrderId);
+			preparedStatement.setInt(2, employeeId);
+
+			int row = preparedStatement.executeUpdate();
+			ResultSet rs = preparedStatement.getGeneratedKeys();
+
+		} catch (SQLException e) {
+			System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-	 
+
+	public void clearRecordsForScheduledOrder(ScheduledOrder scheduledOrder) {
+		//return connection.;
+		Statement stmt = null;
+
+		String sql = "delete from SCHEDULED_ORDER_EMPLOYEE from Order where SCHEDULED_ORDER_ID = " + scheduledOrder.getId();
+		try {
+			stmt = connection.createStatement();
+			stmt.executeQuery(sql);
+
+		} catch (SQLException e ) {
+			System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
+		}
+	}
+
+
 	public Connection getConnection() {
 		return connection;
 	}
