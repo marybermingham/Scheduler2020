@@ -72,14 +72,24 @@ public class ScheduleManager {
 		Schedule bestSchedule = null;
 		Integer bestScore = null;
 		//get first best score
-		while(bestSchedule == null){
+		int numberOfFailedAttemptsForFirstValidSchedule = 0;
+		while(bestSchedule == null && numberOfFailedAttemptsForFirstValidSchedule <= numTries){
 			bestSchedule = getRandomSchedule(orderList);
+			if(bestSchedule == null) {
+				System.out.print(",");
+				numberOfFailedAttemptsForFirstValidSchedule++;
+				continue;
+			}
 			bestScore = getScheduleScore(bestSchedule);
-			bestScheduleService.saveBestSchedule(bestSchedule, orderList.getId());
+			bestSchedule = bestScheduleService.saveBestSchedule(bestSchedule, orderList.getId());
 			System.out.println(bestSchedule);
 		}
+		if(bestSchedule == null) {
+			System.out.println("\n No valid schedules found.");
+			return;
+		}
 
-		for(int i = 0; i < numTries; i++){
+		for(int i = numberOfFailedAttemptsForFirstValidSchedule; i < numTries; i++){
 			Schedule randomSchedule = getRandomSchedule(orderList);
         	if(randomSchedule == null){
 				System.out.print(",");
@@ -91,7 +101,8 @@ public class ScheduleManager {
 				bestScheduleService.clearBestSchedule(bestSchedule, orderList.getId());
 				bestSchedule = randomSchedule;
 				bestScheduleService.saveBestSchedule(bestSchedule, orderList.getId());
-				System.out.println(bestSchedule);
+				System.out.print("," + score);
+				System.out.println("\n" + bestSchedule);
         	} else{
 				System.out.print("," + score);
 			}
@@ -104,7 +115,7 @@ public class ScheduleManager {
 		List<ScheduledOrder> scheduledOrders =  schedule.getScheduledOrders();
 		int score = 0;
 		for (ScheduledOrder scheduledOrder : scheduledOrders){
-			LocalDate endDate = scheduledOrder.getOrder().getRequiredDate();
+			LocalDate endDate = scheduledOrder.getEndDate();
 			LocalDate requiredDate = scheduledOrder.getOrder().getRequiredDate();
 			score = score + (int)DAYS.between(endDate, requiredDate);
 		}
@@ -233,7 +244,10 @@ public class ScheduleManager {
 		while (!date.isAfter(order.getRequiredDate())) {
 			
 			LocalDate endDate = date.plusDays(numProcessDays);
-			boolean isMachineAvailable = DateUtils.doesPeriodContainAnyDates(date, endDate, machineUnavailableDaysMap.get(machineId));
+			if(endDate.isAfter(order.getRequiredDate())) {
+				break;
+			}
+			boolean isMachineAvailable = !DateUtils.doesPeriodContainAnyDates(date, endDate, machineUnavailableDaysMap.get(machineId));
 			List<Employee> availableEmployees = getAvailableEmployeesForPeriod(date, endDate, employeeUnavailableDaysMap);
 			boolean isMinNoOfEmployeesAvailable = noEmployeesRequired <= availableEmployees.size();
 			if(isMachineAvailable && isMinNoOfEmployeesAvailable) {
@@ -255,7 +269,7 @@ public class ScheduleManager {
 		machineUnavailableDays.addAll(orderDateList);
 		List<Employee> availableEmployeesForOrder = getAvailableEmployeesForPeriod(orderStartDate, orderEndDate, employeeUnavailableDaysMap);
 		List<Employee> employeesForOrder = new ArrayList<>();
-		for(int i = 0; i <= noEmployeesRequired; i++ ) {
+		for(int i = 0; i < noEmployeesRequired; i++ ) {
 			Employee orderEmployee = availableEmployeesForOrder.get(i);
 			employeesForOrder.add(orderEmployee);
 			List<LocalDate> employeeUnavailableDays = employeeUnavailableDaysMap.get(orderEmployee);
@@ -268,10 +282,11 @@ public class ScheduleManager {
 	}
 	
 	private List<Employee> getAvailableEmployeesForPeriod(LocalDate startPeriod, LocalDate endPeriod,  Map<Employee, List<LocalDate>>  employeeUnavailableDaysMap){
-		List<Employee> allEmployees = employeeService.getAllEmployees();
+		List<Employee> allEmployees = employeeService.getAll();
 		List<Employee> availableEmployees = new ArrayList<>();
 		for(Employee employee : allEmployees) {
-			if(!DateUtils.doesPeriodContainAnyDates(startPeriod, endPeriod, employeeUnavailableDaysMap.get(employee))){
+			List<LocalDate> unavailableDays = employeeUnavailableDaysMap.get(employee);
+			if(unavailableDays != null && !DateUtils.doesPeriodContainAnyDates(startPeriod, endPeriod, unavailableDays)){
 				availableEmployees.add(employee);
 			}
 		}

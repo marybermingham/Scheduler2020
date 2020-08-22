@@ -2,11 +2,11 @@ package scheduler.service;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
 
 import scheduler.domain.Employee;
 import scheduler.domain.EmployeeHoliday;
@@ -28,16 +28,19 @@ public class EmployeeService {
 		//return connection.;
 	    Statement stmt = null;
 	    Employee employee = null;
-	    String query = "select * from Employee where id = " + id;
+	    String query = "select * from EMPLOYEE where id = " + id;
 	    try {
 	        stmt = connection.createStatement();
-	        ResultSet rs = stmt.executeQuery(query);        
-	        employee = getEmployeeFromResult(rs);
+	        ResultSet rs = stmt.executeQuery(query);
+	        ResultSetMetaData rsmd = rs.getMetaData();
+	        String name = rsmd.getColumnName(1);
+	        while (rs.next()) {
+	        	employee = getEmployeeFromResult(rs);
+	        }
+	        
 		    } catch (SQLException e ) {
-		      
-		    } finally {
-		       // if (stmt != null) { stmt.close(); }
-		    }	 
+				System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
+		    } 
 			return employee;
 		}
 	
@@ -53,13 +56,13 @@ public class EmployeeService {
 	    	employee.setEmail(rs.getString("EMAIL"));
 	    	  	
 		} catch (SQLException e ) {
-		      
+			System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
 	    }
 		return employee;
 	}
 
 
-	public List<Employee> getAllEmployees() {
+	public List<Employee> getAll() {
 		
 		List<Employee> result = new ArrayList<>();
 		//return connection.;
@@ -75,17 +78,15 @@ public class EmployeeService {
 				employee.setName(rs.getString("NAME"));
 	        	employee.setAddress(rs.getString("ADDRESS"));
 	        	employee.setPhoneNo(rs.getString("PHONE_NO"));
-	        	employee.setEmail(rs.getString(" EMAIL"));
+	        	employee.setEmail(rs.getString("EMAIL"));
 	        	
 
 	           result.add(employee);
 	           
 	        }
 	    } catch (SQLException e ) {
-	      
-	    } finally {
-	       // if (stmt != null) { stmt.close(); }
-	    }
+			System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
+	    } 
 	 
 		return result;
 	}
@@ -110,10 +111,8 @@ public class EmployeeService {
 			        }
 		        
 			    } catch (SQLException e ) {
-			      
-			    } finally {
-			       // if (stmt != null) { stmt.close(); }
-			    }
+					System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
+			    } 
 			 
 				return result;
 			}

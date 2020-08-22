@@ -24,7 +24,7 @@ public class ScheduledOrderService {
 
 	public ScheduledOrder saveOrUpdate(ScheduledOrder scheduledOrder, Integer scheduleId) {
 
-		String SQL_INSERT = "INSERT INTO ORDER (SCHEDULE_ID, ORDER_ID, START_DATE, END_DATE) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE ORDER_LIST_ID=?, CUSTOMER_NAME=?, PRODUCT_ID=?, REQUIRED_DATE=?";
+		String SQL_INSERT = "INSERT INTO SCHEDULED_ORDER (SCHEDULE_ID, ORDER_ID, START_DATE, END_DATE) VALUES (?,?,?,?)";
 		String GENERATED_COLUMNS[] = { "ID" };
 
 		try (
@@ -34,7 +34,7 @@ public class ScheduledOrderService {
 			preparedStatement.setDate(3, java.sql.Date.valueOf(scheduledOrder.getStartDate()));
 			preparedStatement.setDate(4, java.sql.Date.valueOf(scheduledOrder.getEndDate()));
 
-			int row = preparedStatement.executeUpdate();
+			preparedStatement.executeUpdate();
 			ResultSet rs = preparedStatement.getGeneratedKeys();
 
 			if (rs.next()) {

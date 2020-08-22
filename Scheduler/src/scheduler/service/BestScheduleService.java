@@ -39,11 +39,12 @@ public class BestScheduleService {
 				int id = rs.getInt(1);
 				schedule.setId(id);
 			}
-
+			List<ScheduledOrder> savedScheduledOrders = new ArrayList<ScheduledOrder>();				
 			for(ScheduledOrder scheduledOrder : schedule.getScheduledOrders()){
-				scheduledOrderService.saveOrUpdate(scheduledOrder, schedule.getId());
+				ScheduledOrder savedScheduledOrder = scheduledOrderService.saveOrUpdate(scheduledOrder, schedule.getId());
+				savedScheduledOrders.add(savedScheduledOrder);	
 			}
-
+			schedule.setScheduledOrders(savedScheduledOrders);
 
 		} catch (SQLException e) {
 			System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
@@ -66,11 +67,11 @@ public class BestScheduleService {
 
 		try {
 			stmt = connection.createStatement();
-			stmt.executeQuery(sql1);
-			stmt.executeQuery(sql2);
+			stmt.execute(sql1);
+			stmt.execute(sql2);
 			for(ScheduledOrder scheduledOrder : schedule.getScheduledOrders()){
 				String sql = "delete from SCHEDULED_ORDER_EMPLOYEE WHERE SCHEDULED_ORDER_ID = " + scheduledOrder.getId();
-				stmt.executeQuery(sql);
+				stmt.execute(sql);
 			}
 
 		} catch (SQLException e ) {

@@ -17,15 +17,14 @@ public class ScheduleOrderEmployeeService {
 
 	public void save(Integer scheduledOrderId, Integer employeeId) {
 
-		String SQL_INSERT = "INSERT INTO ORDER (SCHEDULED_ORDER_ID, EMPLOYEE_ID) VALUES (?,?)";
+		String SQL_INSERT = "INSERT INTO SCHEDULED_ORDER_EMPLOYEE (SCHEDULED_ORDER_ID, EMPLOYEE_ID) VALUES (?,?)";
 
 		try (
 			PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT)) {
 			preparedStatement.setInt(1, scheduledOrderId);
 			preparedStatement.setInt(2, employeeId);
 
-			int row = preparedStatement.executeUpdate();
-			ResultSet rs = preparedStatement.getGeneratedKeys();
+			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
 			System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());

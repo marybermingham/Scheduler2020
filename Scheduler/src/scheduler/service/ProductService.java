@@ -74,10 +74,10 @@ public class ProductService {
 	    	product.setName(rs.getString("NAME"));
 	    	product.setNoEmployeesRequired(rs.getInt("NO_EMP_REQUIRED"));
 	    	product.setNoProcessDays(rs.getInt("NO_PROCESS_DAYS"));
-	    	product.setMachineCode(rs.getString("MACHINE_ID"));
+	    	product.setMachineCode(rs.getString("MACHINE_CODE"));
 	    	  	
 		} catch (SQLException e ) {
-		      
+			System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());   
 	    }
 		return product;
 	}
