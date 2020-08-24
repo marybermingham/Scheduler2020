@@ -82,6 +82,13 @@ public class Employee {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	
+
+	@Override
+	public String toString() {
+		return "Employee [cardId=" + cardId + ", name=" + name + "]";
+	}
 
 	@Override
 	public int hashCode() {

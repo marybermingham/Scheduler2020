@@ -32,9 +32,7 @@ public class EmployeeService {
 	    try {
 	        stmt = connection.createStatement();
 	        ResultSet rs = stmt.executeQuery(query);
-	        ResultSetMetaData rsmd = rs.getMetaData();
-	        String name = rsmd.getColumnName(1);
-	        while (rs.next()) {
+		        while (rs.next()) {
 	        	employee = getEmployeeFromResult(rs);
 	        }
 	        
@@ -104,7 +102,7 @@ public class EmployeeService {
 		        	EmployeeHoliday employeeHoliday = new EmployeeHoliday();
 		        	employeeHoliday.setId(rs.getInt("ID"));
 		            employeeHoliday.setDate(rs.getDate("HOL_DATE").toLocalDate());
-		            String employeeId = rs.getString("EMPLOYEE_ID");
+		         
 		        	
 	 	 	
 			           result.add(employeeHoliday);

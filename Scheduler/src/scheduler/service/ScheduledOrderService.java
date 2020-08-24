@@ -1,13 +1,12 @@
 package scheduler.service;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import scheduler.domain.Employee;
 import scheduler.domain.ScheduledOrder;
-import scheduler.domain.Schedule;
-import scheduler.domain.Product;
 
 public class ScheduledOrderService {
 

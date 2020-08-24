@@ -112,17 +112,24 @@ public class ScheduleManager {
 	}
 	
 	private Integer getScheduleScore(Schedule schedule) {
-		List<ScheduledOrder> scheduledOrders =  schedule.getScheduledOrders();
-		int score = 0;
-		for (ScheduledOrder scheduledOrder : scheduledOrders){
-			LocalDate endDate = scheduledOrder.getEndDate();
-			LocalDate requiredDate = scheduledOrder.getOrder().getRequiredDate();
-			score = score + (int)DAYS.between(endDate, requiredDate);
+		   int score = 0;
+		   List<ScheduledOrder> scheduledOrders = schedule.getScheduledOrders();
+		   LocalDate earliestStartDate = null;
+		   for (ScheduledOrder scheduledOrder : scheduledOrders){
+		      LocalDate startDate = scheduledOrder.getStartDate();
+		      LocalDate endDate = scheduledOrder.getEndDate();
+		      LocalDate requiredDate = scheduledOrder.getOrder().getRequiredDate();
+		      score = score + (int)DAYS.between(endDate, requiredDate);
+		      if(earliestStartDate == null || startDate.isBefore(earliestStartDate)){
+		         earliestStartDate = startDate;
+		      }
+		   }
+		   //subtract num days before earliest start date
+		   score = score - (int)DAYS.between(LocalDate.now(), earliestStartDate);
+		   schedule.setScore(score);
+		   
+		   return score;
 		}
-		schedule.setScore(score);
-		return score;
-	}
-	
 	
 	
 	private boolean isNewOrderRequired(){
@@ -158,21 +165,21 @@ public class ScheduleManager {
             String productCode = scanner.nextLine();
             product = productService.getByCode(productCode);
             if(product == null) {
-                System.out.println("Unrecognised product id!");       
+                System.out.println("Unrecognised product code!");       
             }           
         }
         
         System.out.println("Please enter customer name:");
         String customerName = scanner.nextLine();
         
-        LocalDate completionDate = null;
-        while (completionDate == null) {
-            System.out.println("Please enter completion date (dd/mm/yy)");
-            String completionDateString = scanner.nextLine();
-            completionDate = DateUtils.getDateFromString(completionDateString);
+        LocalDate requiredDate = null;
+        while (requiredDate == null) {
+            System.out.println("Please enter required date (dd/mm/yy)");
+            String requiredDateString = scanner.nextLine();
+            requiredDate = DateUtils.getDateFromString(requiredDateString);
         }
         
-        Order order = new Order(product, customerName, completionDate);
+        Order order = new Order(product, customerName, requiredDate);
         System.out.println(order);
 
         return order;
@@ -240,25 +247,21 @@ public class ScheduleManager {
 
 		//loop through all dates up till required completion date and build list of applicable dates based on available resources
 		List<LocalDate> applicableDates = new ArrayList<>();
-		LocalDate date = startDate;
-		while (!date.isAfter(order.getRequiredDate())) {
-			
-			LocalDate endDate = date.plusDays(numProcessDays);
-			if(endDate.isAfter(order.getRequiredDate())) {
-				break;
-			}
-			boolean isMachineAvailable = !DateUtils.doesPeriodContainAnyDates(date, endDate, machineUnavailableDaysMap.get(machineId));
-			List<Employee> availableEmployees = getAvailableEmployeesForPeriod(date, endDate, employeeUnavailableDaysMap);
-			boolean isMinNoOfEmployeesAvailable = noEmployeesRequired <= availableEmployees.size();
-			if(isMachineAvailable && isMinNoOfEmployeesAvailable) {
-				applicableDates.add(date);
-			}
-			date = date.plusDays(1);			
+		LocalDate latestStartDate = order.getRequiredDate().plusDays(numProcessDays);
+		for(LocalDate date = startDate; !date.isAfter(latestStartDate); date = date.plusDays(1)) {
+		   LocalDate endDate = date.plusDays(numProcessDays);
+		   boolean isMachineAvailable = !DateUtils.doesPeriodContainAnyDates(date, endDate, machineUnavailableDaysMap.get(machineId));
+		   List<Employee> availableEmployees = getAvailableEmployeesForPeriod(date, endDate, employeeUnavailableDaysMap);
+		   boolean isMinNoOfEmployeesAvailable = noEmployeesRequired <= availableEmployees.size();
+		   if(isMachineAvailable && isMinNoOfEmployeesAvailable) {
+		      applicableDates.add(date);
+		   }
 		}
 		// if no applicable dates then discontinue
 		if(applicableDates.size() == 0){
-			return null;
+		   return null;
 		}
+
 		
 		int randomIndex = (int)(Math.random() * (applicableDates.size() - 1));
 		
