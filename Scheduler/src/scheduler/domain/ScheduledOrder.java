@@ -3,7 +3,7 @@ package scheduler.domain;
 import java.time.LocalDate;
 import java.util.List;
 
-public class ScheduledOrder {
+public class ScheduledOrder implements Comparable<ScheduledOrder>{
 	private Integer id;
 	private Order order;
     private LocalDate startDate;
@@ -73,4 +73,10 @@ public class ScheduledOrder {
 				", employees=" + employees +
 				'}';
 	}
+	
+	@Override
+    public int compareTo(ScheduledOrder o) 
+    {
+        return this.startDate.compareTo( o.getStartDate());
+    }
 }

@@ -2,7 +2,6 @@ package scheduler.service;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -12,7 +11,7 @@ import scheduler.domain.Employee;
 import scheduler.domain.EmployeeHoliday;
 
 public class EmployeeService {
-	
+//import java.sql.ResultSetMetaData;	
 	
 	private Connection connection;
 		

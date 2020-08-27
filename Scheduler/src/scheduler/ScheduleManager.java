@@ -3,6 +3,7 @@ package scheduler;
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,9 +67,9 @@ public class ScheduleManager {
 		System.out.println("How many randomly selected schedules do you want to try?");
 		int numTries = getNumberOfTries();
 
-		System.out.println("Starting search for best schedule");
 		OrderList orderList = new OrderList(orders);
 		orderList = orderListService.save(orderList);
+		System.out.println("Finding best schedule for Order List ID: " + orderList.getId());
 		Schedule bestSchedule = null;
 		Integer bestScore = null;
 		//get first best score
@@ -82,8 +83,8 @@ public class ScheduleManager {
 			}
 			bestScore = getScheduleScore(bestSchedule);
 			bestSchedule = bestScheduleService.saveBestSchedule(bestSchedule, orderList.getId());
-			System.out.println(bestSchedule);
-		}
+			printSchedule(bestSchedule);
+			}
 		if(bestSchedule == null) {
 			System.out.println("\n No valid schedules found.");
 			return;
@@ -102,7 +103,7 @@ public class ScheduleManager {
 				bestSchedule = randomSchedule;
 				bestScheduleService.saveBestSchedule(bestSchedule, orderList.getId());
 				System.out.print("," + score);
-				System.out.println("\n" + bestSchedule);
+				printSchedule(bestSchedule);
         	} else{
 				System.out.print("," + score);
 			}
@@ -192,10 +193,6 @@ public class ScheduleManager {
 		Map<String, List<LocalDate>>  machineUnavailableDaysMap = getMachineUnavailableDaysMap();
 		List<Order> orders = orderList.getOrders();
 		List<ScheduledOrder> scheduledOrders = new ArrayList<>();
-//		List<LocalDate> orderRequiredDates = new ArrayList<>();
-//		for(Order order : orders) {
-//			orderRequiredDates.add(order.getRequiredDate());
-//		}
 		LocalDate startDate = LocalDate.now();		
 		for(Order order : orders) {
 			ScheduledOrder scheduledOrder = randomlyScheduleOrder(startDate, order, employeeUnavailableDaysMap, machineUnavailableDaysMap);
@@ -203,7 +200,7 @@ public class ScheduleManager {
 				//this schedule could not be completed. Start from scratch
 				return null;
 			}
-			scheduledOrders.add(randomlyScheduleOrder(startDate, order, employeeUnavailableDaysMap, machineUnavailableDaysMap));
+			scheduledOrders.add(scheduledOrder);
 		}
 		Schedule schedule = new Schedule(scheduledOrders);
 		return  schedule;
@@ -298,7 +295,6 @@ public class ScheduleManager {
 
 	public static void main(String[] args)  {
 		try {
-			//TODO Auto-Generated method stub
 			Connection connection = DBConnector.getConnection();
 			ScheduleManager scheduleManager = new ScheduleManager(connection);
 			scheduleManager.run();
@@ -306,6 +302,20 @@ public class ScheduleManager {
 	   } catch (Exception e) {
 		System.out.println(e);
 	   }
+	}
+	
+	private void printSchedule(Schedule schedule) {
+		System.out.print("\n");
+		List<ScheduledOrder> scheduledOrders = schedule.getScheduledOrders();
+		Collections.sort(scheduledOrders);
+		for (ScheduledOrder scheduledOrder : scheduledOrders) {
+			String employeeString = ", Employees Names: ";
+			for(Employee employee : scheduledOrder.getEmployees()) {
+				employeeString = employeeString + employee.getName() + " (" + employee.getCardId() + "), "; 
+			}
+			System.out.println(scheduledOrder.getOrder().getProduct().getCode() + ": Start: " + scheduledOrder.getStartDate() + ", End: " 
+					+ scheduledOrder.getEndDate() + ", Required By: " + scheduledOrder.getOrder().getRequiredDate()
+					+ ", Machine: " + scheduledOrder.getOrder().getProduct().getMachineCode() + employeeString);		}
 	}
 }
 
